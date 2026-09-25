@@ -1,0 +1,91 @@
+<%- include('partials/header') %>
+<h1 style="margin-top:1rem"><%= t('post_ad') %></h1>
+<% if (error) { %><div class="alert"><%= error %></div><% } %>
+<form method="POST" enctype="multipart/form-data" class="panel stack" style="max-width:640px;margin-top:1rem">
+  <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+  <div>
+    <label class="label">عنوان آگهی *</label>
+    <input class="input" name="title" required maxlength="100" placeholder="مثلاً آیفون ۱۳ پرو ۶۴ گیگ">
+  </div>
+  <div>
+    <label class="label">دسته‌بندی *</label>
+    <select class="input" name="category_id" required>
+      <option value="">انتخاب کنید</option>
+      <% categories.forEach(c => { %>
+        <option value="<%= c.id %>"
+          data-paid="<%= c.paid_enabled ? '1' : '0' %>"
+          data-price="<%= c.ad_price || 0 %>"
+          data-currency="<%= c.ad_currency || 'AMD' %>">
+          <%= c.icon %> <%= catName(c) %><%= c.paid_enabled && c.ad_price ? ' — ' + Number(c.ad_price).toLocaleString('fa-IR') + ' ' + (c.ad_currency||'AMD') : '' %>
+        </option>
+      <% }) %>
+    </select>
+  </div>
+  <div>
+    <label class="label">توضیحات *</label>
+    <textarea class="input" name="description" rows="5" required maxlength="4000" placeholder="وضعیت، محل تحویل، دلیل فروش..."></textarea>
+  </div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.6rem">
+    <div>
+      <label class="label">قیمت (خالی = توافقی)</label>
+      <input class="input" type="number" name="price" min="0">
+    </div>
+    <div>
+      <label class="label">ارز</label>
+      <select class="input" name="currency">
+        <option value="AMD">AMD</option>
+        <option value="USD">USD</option>
+        <option value="IRR">ریال</option>
+        <option value="EUR">EUR</option>
+      </select>
+    </div>
+  </div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.6rem">
+    <div>
+      <label class="label">شهر</label>
+      <input class="input" name="city" value="Yerevan">
+    </div>
+    <div>
+      <label class="label">محله</label>
+      <input class="input" name="district" placeholder="Kentron, Arabkir...">
+    </div>
+  </div>
+  <div>
+    <label class="label">وضعیت کالا</label>
+    <select class="input" name="condition">
+      <option value="used">کارکرده</option>
+      <option value="new">نو</option>
+    </select>
+  </div>
+  <div>
+    <label class="label">تلفن تماس</label>
+    <input class="input" name="contact_phone" value="<%= user.phone %>" maxlength="30">
+  </div>
+  <div>
+    <label class="label">واتساپ</label>
+    <input class="input" name="contact_whatsapp" value="<%= user.whatsapp || '' %>" maxlength="30">
+  </div>
+  <div>
+    <label class="label">عکس‌ها (تا ۱۲ تصویر)</label>
+    <input class="input" type="file" name="images" accept="image/jpeg,image/png,image/webp" multiple>
+  </div>
+  <div id="payHint" class="alert" style="display:none"></div>
+  <button class="btn btn-primary" type="submit" style="width:100%">ثبت آگهی</button>
+  <p class="muted">اگر دسته پولی باشد، بعد از ثبت باید هزینه را واریز کنید. در غیر این صورت آگهی برای تایید ادمین می‌رود.</p>
+<script>
+(function(){
+  var sel = document.querySelector('select[name="category_id"]');
+  var hint = document.getElementById('payHint');
+  function sync(){
+    var o = sel.options[sel.selectedIndex];
+    if (!o || !o.value) { hint.style.display='none'; return; }
+    if (o.getAttribute('data-paid')==='1' && parseFloat(o.getAttribute('data-price'))>0) {
+      hint.style.display='block';
+      hint.textContent = 'این دسته پولی است: ' + Number(o.getAttribute('data-price')).toLocaleString('fa-IR') + ' ' + o.getAttribute('data-currency');
+    } else { hint.style.display='none'; }
+  }
+  sel.addEventListener('change', sync); sync();
+})();
+</script>
+</form>
+<%- include('partials/footer') %>

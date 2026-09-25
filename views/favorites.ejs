@@ -1,0 +1,15 @@
+<%- include('partials/header') %>
+<h1 style="margin-top:1rem"><%= t('favorites') %></h1>
+<div class="grid-cards" style="margin-top:1rem">
+  <% ads.forEach(a => { %>
+    <a class="card" href="/ad/<%= a.code %>">
+      <% if (a.image_path) { %><img class="card-img" src="<%= a.image_path %>" alt=""><% } else { %><div class="card-img" style="display:flex;align-items:center;justify-content:center;font-size:2rem"><%= a.icon %></div><% } %>
+      <div class="card-body">
+        <h2 class="title-sm"><%= a.title %></h2>
+        <% if (a.price != null) { %><div class="price"><%= Number(a.price).toLocaleString('fa-IR') %> <%= a.currency %></div><% } %>
+      </div>
+    </a>
+  <% }) %>
+</div>
+<% if (!ads.length) { %><p class="muted" style="text-align:center;padding:2rem">نشانه‌ای ندارید</p><% } %>
+<%- include('partials/footer') %>

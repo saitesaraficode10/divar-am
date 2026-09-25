@@ -1,0 +1,11 @@
+<%- include('partials/header') %>
+<div class="auth-wrap">
+  <div class="panel auth-card" style="text-align:center">
+    <div style="font-size:2rem;color:var(--ok)">✓</div>
+    <h1 style="margin:0.4rem 0">ثبت‌نام موفق</h1>
+    <p class="muted">کد کاربری شما</p>
+    <div style="font-size:1.8rem;font-weight:800;color:var(--accent)"><%= user_code %></div>
+    <a class="btn btn-primary" href="/login" style="margin-top:1rem"><%= t('login') %></a>
+  </div>
+</div>
+<%- include('partials/footer') %>

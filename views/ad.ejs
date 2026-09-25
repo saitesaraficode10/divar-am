@@ -1,0 +1,55 @@
+<%- include('partials/header') %>
+<div class="two-col" style="margin-top:1rem">
+  <section class="panel" style="padding:0;overflow:hidden">
+    <% if (images && images.length) { %>
+      <img id="mainPhoto" src="<%= images[0].path %>" alt="" style="width:100%;height:320px;object-fit:cover;display:block">
+      <% if (images.length > 1) { %>
+        <div class="gallery-thumbs" style="padding:0.6rem">
+          <% images.forEach((img, i) => { %>
+            <img src="<%= img.path %>" data-thumb="<%= img.path %>" class="<%= i===0?'active':'' %>" alt="">
+          <% }) %>
+        </div>
+      <% } %>
+    <% } else { %>
+      <div style="height:220px;display:flex;align-items:center;justify-content:center;background:#eef1f4;font-size:3rem"><%= ad.icon || '📦' %></div>
+    <% } %>
+    <div style="padding:1.15rem">
+      <div style="display:flex;gap:0.4rem;flex-wrap:wrap;margin-bottom:0.5rem">
+        <span class="badge"><%= catName(ad) %></span>
+        <span class="badge"><%= ad.condition === 'new' ? t('new') : t('used') %></span>
+        <span class="badge"><%= ad.views %> <%= t('views') %></span>
+      </div>
+      <h1 style="margin:0 0 0.4rem;font-size:1.35rem"><%= ad.title %></h1>
+      <% if (ad.price != null) { %>
+        <div class="price" style="font-size:1.3rem"><%= Number(ad.price).toLocaleString('fa-IR') %> <%= ad.currency %></div>
+      <% } else { %>
+        <div class="price">توافقی</div>
+      <% } %>
+      <p class="muted"><%= ad.city %><% if (ad.district) { %> · <%= ad.district %><% } %></p>
+      <h3 style="margin:1rem 0 0.4rem"><%= t('description') %></h3>
+      <p style="line-height:1.85;white-space:pre-wrap;margin:0"><%= ad.description %></p>
+    </div>
+  </section>
+
+  <aside class="panel stack">
+    <h2 style="margin:0;font-size:1.05rem"><%= t('contact') %></h2>
+    <p class="muted" style="margin:0">فروشنده: <%= ad.seller_name %> · کد <%= ad.user_code %></p>
+    <% if (ad.contact_phone) { %>
+      <a class="btn btn-ghost" href="tel:<%= ad.contact_phone %>" style="width:100%">📞 <%= ad.contact_phone %></a>
+    <% } %>
+    <% if (ad.contact_whatsapp) { %>
+      <a class="btn btn-primary" style="width:100%" target="_blank" rel="noopener"
+         href="https://wa.me/<%= String(ad.contact_whatsapp).replace(/[^0-9]/g,'') %>">واتساپ</a>
+    <% } %>
+    <% if (typeof user !== 'undefined' && user) { %>
+      <form method="POST" action="/favorites/<%= ad.code %>/toggle">
+        <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+        <button class="btn btn-soft" type="submit" style="width:100%"><%= isFav ? 'حذف از نشان‌ها' : 'افزودن به نشان‌ها' %></button>
+      </form>
+    <% } else { %>
+      <a class="btn btn-ghost" href="/login?next=/ad/<%= ad.code %>" style="width:100%">برای نشان‌کردن وارد شوید</a>
+    <% } %>
+    <p class="muted" style="font-size:0.8rem">قبل از معامله حضوری در مکان امن ملاقات کنید. از واریز بیعانه به افراد ناشناس خودداری کنید.</p>
+  </aside>
+</div>
+<%- include('partials/footer') %>

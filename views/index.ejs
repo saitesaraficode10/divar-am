@@ -1,0 +1,63 @@
+<%- include('partials/header') %>
+<section class="hero">
+  <h1><%= siteName %></h1>
+  <p>خرید و فروش امن بین ایرانیان در ارمنستان — مثل دیوار، مخصوص ایروان و شهرهای ارمنستان</p>
+  <form class="search-bar" method="GET" action="/">
+    <input name="q" value="<%= filters.q || '' %>" placeholder="<%= t('search') %>" maxlength="80">
+    <button class="btn btn-primary" type="submit"><%= t('filter') %></button>
+  </form>
+</section>
+
+<div class="cats">
+  <% categories.forEach(c => { %>
+    <a class="cat" href="/?category=<%= c.slug %>">
+      <span class="ico"><%= c.icon %></span>
+      <span class="name"><%= catName(c) %></span>
+    </a>
+  <% }) %>
+</div>
+
+<form class="filters" method="GET">
+  <input type="hidden" name="q" value="<%= filters.q || '' %>">
+  <select class="input" name="category">
+    <option value=""><%= t('all_categories') %></option>
+    <% categories.forEach(c => { %>
+      <option value="<%= c.slug %>" <%= filters.category===c.slug?'selected':'' %>><%= catName(c) %></option>
+    <% }) %>
+  </select>
+  <input class="input" name="city" value="<%= filters.city || '' %>" placeholder="<%= t('city') %> (Yerevan...)">
+  <input class="input" name="price_from" type="number" value="<%= filters.price_from || '' %>" placeholder="از قیمت">
+  <input class="input" name="price_to" type="number" value="<%= filters.price_to || '' %>" placeholder="تا قیمت">
+  <button class="btn btn-ghost" type="submit"><%= t('filter') %></button>
+</form>
+
+<div class="grid-cards">
+  <% ads.forEach(a => { %>
+    <article class="card">
+      <a href="/ad/<%= a.code %>">
+        <% if (a.image_path) { %>
+          <img class="card-img" src="<%= a.image_path %>" alt="" loading="lazy">
+        <% } else { %>
+          <div class="card-img" style="display:flex;align-items:center;justify-content:center;font-size:2rem"><%= a.icon || '📦' %></div>
+        <% } %>
+        <div class="card-body">
+          <h2 class="title-sm"><%= a.title %></h2>
+          <p class="muted" style="margin:0.3rem 0 0"><%= a.city %><% if (a.district) { %> · <%= a.district %><% } %></p>
+          <% if (a.price != null) { %>
+            <div class="price"><%= Number(a.price).toLocaleString('fa-IR') %> <%= a.currency %></div>
+          <% } else { %>
+            <div class="price" style="font-size:0.9rem">توافقی</div>
+          <% } %>
+        </div>
+      </a>
+      <% if (typeof user !== 'undefined' && user) { %>
+        <form method="POST" action="/favorites/<%= a.code %>/toggle">
+          <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+          <button class="fav-btn" type="submit"><%= favIds.has(a.id) ? '♥' : '♡' %></button>
+        </form>
+      <% } %>
+    </article>
+  <% }) %>
+</div>
+<% if (!ads.length) { %><p class="muted" style="text-align:center;padding:2.5rem 0"><%= t('no_ads') %></p><% } %>
+<%- include('partials/footer') %>

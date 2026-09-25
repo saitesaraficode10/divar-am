@@ -1,0 +1,22 @@
+<%- include('partials/header') %>
+<div class="auth-wrap">
+  <div class="panel auth-card">
+    <h1 style="margin-top:0;text-align:center">پرداخت هزینه آگهی</h1>
+    <p class="muted" style="text-align:center">دسته: <%= catName %> · کد آگهی: <b><%= code %></b></p>
+    <div style="text-align:center;font-size:1.5rem;font-weight:800;color:var(--accent);margin:0.75rem 0">
+      <%= Number(amount).toLocaleString('fa-IR') %> <%= currency %>
+    </div>
+    <div class="stack">
+      <% if (cards.ir) { %><p><b>کارت ایران:</b> <code><%= cards.ir %></code></p><% } %>
+      <% if (cards.am) { %><p><b>کارت ارمنستان:</b> <code><%= cards.am %></code></p><% } %>
+      <% if (cards.visa) { %><p><b>Visa:</b> <code><%= cards.visa %></code></p><% } %>
+      <% if (!cards.ir && !cards.am && !cards.visa) { %>
+        <p class="muted">هنوز کارتی فعال نشده. با پشتیبانی هماهنگ کنید.</p>
+      <% } %>
+      <% if (cards.note) { %><p class="muted"><%= cards.note %></p><% } %>
+    </div>
+    <p class="muted" style="margin-top:1rem">پس از واریز، ادمین پرداخت را تایید می‌کند و آگهی منتشر می‌شود.</p>
+    <a class="btn btn-primary" href="/my-ads" style="width:100%;margin-top:0.75rem">آگهی‌های من</a>
+  </div>
+</div>
+<%- include('partials/footer') %>

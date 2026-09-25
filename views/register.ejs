@@ -1,0 +1,29 @@
+<%- include('partials/header') %>
+<div class="auth-wrap">
+  <div class="panel auth-card">
+    <h1 style="margin-top:0;text-align:center"><%= t('register') %></h1>
+    <% if (error) { %><div class="alert"><%= error %></div><% } %>
+    <form method="POST" class="stack">
+      <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+      <div><label class="label">نام *</label><input class="input" name="full_name" required maxlength="80"></div>
+      <div>
+        <label class="label">شماره تماس *</label>
+        <div class="phone-row">
+          <select class="input" name="phone_cc" data-country-code data-prefer="+374"></select>
+          <input class="input" name="phone_local" required maxlength="15" placeholder="بدون صفر اول">
+        </div>
+      </div>
+      <div>
+        <label class="label">واتساپ</label>
+        <div class="phone-row">
+          <select class="input" name="wa_cc" data-country-code data-prefer="+374"></select>
+          <input class="input" name="wa_local" maxlength="15" placeholder="اختیاری">
+        </div>
+      </div>
+      <div><label class="label">شهر</label><input class="input" name="city" value="Yerevan"></div>
+      <div><label class="label">رمز (حداقل ۶) *</label><input class="input" type="password" name="password" required minlength="6" maxlength="72"></div>
+      <button class="btn btn-primary" style="width:100%"><%= t('register') %></button>
+    </form>
+  </div>
+</div>
+<%- include('partials/footer') %>
