@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="<%= lang %>" dir="<%= dir %>">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="آگهی خرید و فروش ایرانیان در ارمنستان">
+  <title><%= title %> | <%= siteName %></title>
+  <link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css" rel="stylesheet">
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+<header class="nav">
+  <div class="container nav-inner">
+    <a class="brand" href="/">
+      <span class="brand-badge">DA</span>
+      <span><%= siteName %></span>
+    </a>
+    <div class="nav-links">
+      <a href="/"><%= t('home') %></a>
+      <% if (typeof user !== 'undefined' && user) { %>
+        <a class="btn btn-primary" href="/ads/new" style="padding:0.4rem 0.9rem"><%= t('post_ad') %></a>
+        <a href="/my-ads"><%= t('my_ads') %></a>
+        <a href="/favorites"><%= t('favorites') %></a>
+        <a href="/logout"><%= t('logout') %></a>
+      <% } else { %>
+        <a href="/login"><%= t('login') %></a>
+        <a class="btn btn-primary" href="/register" style="padding:0.4rem 0.9rem"><%= t('register') %></a>
+      <% } %>
+      <span class="lang">
+        <a href="/set-lang/fa" class="<%= lang==='fa'?'active':'' %>">FA</a>
+        <a href="/set-lang/en" class="<%= lang==='en'?'active':'' %>">EN</a>
+        <a href="/set-lang/ru" class="<%= lang==='ru'?'active':'' %>">RU</a>
+        <a href="/set-lang/hy" class="<%= lang==='hy'?'active':'' %>">HY</a>
+      </span>
+    </div>
+  </div>
+</header>
+<main class="container" style="padding-bottom:2rem">
