@@ -1,0 +1,29 @@
+<%- include('../partials/header') %>
+<div style="display:flex;justify-content:space-between;gap:1rem;margin-top:1rem">
+  <h1 style="margin:0">کاربران</h1>
+  <a class="btn btn-ghost" href="/admin">داشبورد</a>
+</div>
+<div class="table-wrap panel" style="padding:0;margin-top:1rem">
+  <table>
+    <thead><tr><th>کد</th><th>نام</th><th>تلفن</th><th>شهر</th><th>وضعیت</th><th></th></tr></thead>
+    <tbody>
+      <% users.forEach(u => { %>
+        <tr>
+          <td><%= u.user_code %></td>
+          <td><%= u.full_name %></td>
+          <td><%= u.phone %></td>
+          <td><%= u.city %></td>
+          <td><%= u.is_banned ? 'مسدود' : 'فعال' %></td>
+          <td>
+            <form method="POST" action="/admin/users/<%= u.id %>/ban">
+              <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+              <input type="hidden" name="ban" value="<%= u.is_banned ? '0' : '1' %>">
+              <button class="btn btn-ghost" style="padding:0.25rem 0.55rem" type="submit"><%= u.is_banned ? 'رفع مسدودی' : 'مسدود' %></button>
+            </form>
+          </td>
+        </tr>
+      <% }) %>
+    </tbody>
+  </table>
+</div>
+<%- include('../partials/footer') %>

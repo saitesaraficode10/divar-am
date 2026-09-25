@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Login</title>
+  <link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css" rel="stylesheet">
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+<div class="auth-wrap">
+  <form method="POST" class="panel auth-card stack">
+    <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+    <h1 style="margin:0;text-align:center">ورود ادمین</h1>
+    <% if (error) { %><div class="alert"><%= error %></div><% } %>
+    <input class="input" name="username" placeholder="نام کاربری" required>
+    <input class="input" type="password" name="password" placeholder="رمز" required>
+    <button class="btn btn-primary" type="submit">ورود</button>
+  </form>
+</div>
+</body></html>

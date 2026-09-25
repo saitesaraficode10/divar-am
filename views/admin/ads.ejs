@@ -1,0 +1,32 @@
+<%- include('../partials/header') %>
+<div style="display:flex;justify-content:space-between;gap:1rem;flex-wrap:wrap;margin-top:1rem">
+  <h1 style="margin:0">آگهی‌ها</h1>
+  <a class="btn btn-ghost" href="/admin">داشبورد</a>
+</div>
+<div style="display:flex;gap:0.4rem;flex-wrap:wrap;margin:0.75rem 0">
+  <a class="btn btn-ghost" href="/admin/ads">همه</a>
+  <a class="btn btn-ghost" href="/admin/ads?status=pending">pending</a>
+  <a class="btn btn-ghost" href="/admin/ads?status=active">active</a>
+  <a class="btn btn-ghost" href="/admin/ads?status=rejected">rejected</a>
+</div>
+<div class="table-wrap panel" style="padding:0">
+  <table>
+    <thead><tr><th>کد</th><th>عنوان</th><th>کاربر</th><th>وضعیت</th><th></th></tr></thead>
+    <tbody>
+      <% ads.forEach(a => { %>
+        <tr>
+          <td><a href="/ad/<%= a.code %>" style="color:var(--accent)"><%= a.code %></a></td>
+          <td><%= a.title %></td>
+          <td class="muted"><%= a.full_name %><br><%= a.phone %></td>
+          <td><%= a.status %></td>
+          <td style="display:flex;gap:0.3rem;flex-wrap:wrap">
+            <form method="POST" action="/admin/ads/<%= a.id %>/status"><input type="hidden" name="_csrf" value="<%= csrfToken %>"><input type="hidden" name="status" value="active"><button class="btn btn-ghost" style="padding:0.2rem 0.5rem">تایید</button></form>
+            <form method="POST" action="/admin/ads/<%= a.id %>/status"><input type="hidden" name="_csrf" value="<%= csrfToken %>"><input type="hidden" name="status" value="rejected"><button class="btn btn-ghost" style="padding:0.2rem 0.5rem">رد</button></form>
+            <form method="POST" action="/admin/ads/<%= a.id %>/delete" onsubmit="return confirm('حذف؟')"><input type="hidden" name="_csrf" value="<%= csrfToken %>"><button class="btn btn-ghost" style="padding:0.2rem 0.5rem;color:#b91c1c">حذف</button></form>
+          </td>
+        </tr>
+      <% }) %>
+    </tbody>
+  </table>
+</div>
+<%- include('../partials/footer') %>

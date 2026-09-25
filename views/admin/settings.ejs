@@ -1,0 +1,30 @@
+<%- include('../partials/header') %>
+<h1 style="margin-top:1rem">تنظیمات پرداخت و تایید</h1>
+<form method="POST" class="panel stack" style="max-width:560px;margin-top:1rem">
+  <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+  <label style="display:flex;align-items:center;gap:0.45rem">
+    <input type="checkbox" name="require_ad_approval" value="1" <%= require_ad_approval==='1'?'checked':'' %>>
+    همه آگهی‌ها بعد از ثبت نیاز به تایید ادمین داشته باشند
+  </label>
+
+  <h2 style="margin:0.5rem 0 0;font-size:1rem">کارت‌های واریز هزینه آگهی</h2>
+  <div>
+    <label class="label"><input type="checkbox" name="pay_card_ir_enabled" value="1" <%= pay_card_ir_enabled==='1'?'checked':'' %>> فعال: کارت ایران</label>
+    <input class="input" name="pay_card_ir" value="<%= pay_card_ir %>" placeholder="شماره کارت ایران">
+  </div>
+  <div>
+    <label class="label"><input type="checkbox" name="pay_card_am_enabled" value="1" <%= pay_card_am_enabled==='1'?'checked':'' %>> فعال: کارت ارمنستان</label>
+    <input class="input" name="pay_card_am" value="<%= pay_card_am %>" placeholder="شماره کارت ارمنستان">
+  </div>
+  <div>
+    <label class="label"><input type="checkbox" name="pay_card_visa_enabled" value="1" <%= pay_card_visa_enabled==='1'?'checked':'' %>> فعال: Visa</label>
+    <input class="input" name="pay_card_visa" value="<%= pay_card_visa %>" placeholder="Visa">
+  </div>
+  <div>
+    <label class="label">پیام راهنما برای مشتری</label>
+    <textarea class="input" name="pay_card_note" rows="3"><%= pay_card_note %></textarea>
+  </div>
+  <button class="btn btn-primary" type="submit">ذخیره</button>
+</form>
+<p style="margin-top:1rem"><a class="btn btn-ghost" href="/admin/categories">مدیریت هزینه هر دسته</a></p>
+<%- include('../partials/footer') %>

@@ -1,0 +1,51 @@
+<%- include('../partials/header') %>
+<div style="display:flex;justify-content:space-between;gap:1rem;flex-wrap:wrap;margin-top:1rem">
+  <h1 style="margin:0">پنل ادمین</h1>
+  <a class="btn btn-ghost" href="/admin/logout">خروج</a>
+</div>
+<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:0.65rem;margin:1rem 0">
+  <div class="panel" style="text-align:center"><b style="font-size:1.4rem"><%= stats.ads %></b><div class="muted">کل آگهی</div></div>
+  <div class="panel" style="text-align:center"><b style="font-size:1.4rem;color:var(--warn)"><%= stats.pending %></b><div class="muted">در انتظار تایید</div></div>
+  <div class="panel" style="text-align:center"><b style="font-size:1.4rem;color:#b45309"><%= typeof stats.pay !== 'undefined' ? stats.pay : 0 %></b><div class="muted">منتظر پرداخت</div></div>
+  <div class="panel" style="text-align:center"><b style="font-size:1.4rem;color:var(--ok)"><%= stats.active %></b><div class="muted">فعال</div></div>
+</div>
+<div style="display:grid;grid-template-columns:1fr;gap:0.5rem;margin-bottom:0.75rem">
+  <div class="panel" style="text-align:center;padding:0.7rem"><b><%= stats.users %></b> کاربر</div>
+</div>
+<div style="display:flex;gap:0.5rem;flex-wrap:wrap;margin-bottom:1rem">
+  <a class="btn btn-primary" href="/admin/ads?status=pending">در انتظار تایید</a>
+  <a class="btn btn-ghost" href="/admin/ads?status=pending_payment">منتظر پرداخت</a>
+  <a class="btn btn-ghost" href="/admin/ads">همه آگهی‌ها</a>
+  <a class="btn btn-ghost" href="/admin/categories">هزینه هر دسته</a>
+  <a class="btn btn-ghost" href="/admin/settings">کارت‌ها / تنظیمات</a>
+  <a class="btn btn-ghost" href="/admin/users">کاربران</a>
+</div>
+<h2>آخرین در انتظار تایید</h2>
+<% pending.forEach(a => { %>
+  <div class="panel" style="margin-top:0.6rem;display:flex;justify-content:space-between;gap:0.75rem;flex-wrap:wrap;align-items:center">
+    <div>
+      <b><%= a.title %></b>
+      <div class="muted"><%= a.full_name %> · <%= a.phone %> · <%= a.code %></div>
+    </div>
+    <div style="display:flex;gap:0.4rem;flex-wrap:wrap">
+      <% if (a.status === 'pending_payment' || a.pay_status === 'pending') { %>
+        <form method="POST" action="/admin/ads/<%= a.id %>/pay-confirm">
+          <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+          <button class="btn btn-primary" style="padding:0.35rem 0.8rem" type="submit">تایید پرداخت</button>
+        </form>
+      <% } else { %>
+        <form method="POST" action="/admin/ads/<%= a.id %>/status">
+          <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+          <input type="hidden" name="status" value="active">
+          <button class="btn btn-primary" style="padding:0.35rem 0.8rem" type="submit">تایید</button>
+        </form>
+      <% } %>
+      <form method="POST" action="/admin/ads/<%= a.id %>/status">
+        <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+        <input type="hidden" name="status" value="rejected">
+        <button class="btn btn-ghost" style="padding:0.35rem 0.8rem" type="submit">رد</button>
+      </form>
+    </div>
+  </div>
+<% }) %>
+<%- include('../partials/footer') %>
